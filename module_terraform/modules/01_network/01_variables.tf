@@ -1,0 +1,1 @@
+variable "create_nat_gateway" {}
