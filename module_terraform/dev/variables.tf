@@ -9,7 +9,7 @@ variable "common" {
     env      = string
   })
   default = {
-    owner_id = "555750989087"  # 実際のAWSアカウントIDに置き換えてください
+    owner_id = "555750989087" # 実際のAWSアカウントIDに置き換えてください
     sysname  = "sample"
     env      = "dev"
   }
@@ -18,7 +18,7 @@ variable "common" {
 variable "aws_region" {
   description = "AWS region"
   type        = string
-  default     = "ap-southeast-2"  # Sydney region
+  default     = "ap-southeast-2" # Sydney region
 }
 
 variable "create_nat_gateway" {
@@ -47,4 +47,34 @@ variable "tags" {
     Project     = "sample"
     ManagedBy   = "terraform"
   }
+}
+
+variable "container_name" {
+  description = "Name of the container"
+  type        = string
+  default     = "sample-container"
+}
+
+variable "container_port" {
+  description = "Port number for the container"
+  type        = number
+  default     = 80
+}
+
+variable "task_cpu" {
+  description = "CPU units for the ECS task"
+  type        = number
+  default     = 512
+}
+
+variable "task_memory" {
+  description = "Memory for the ECS task"
+  type        = number
+  default     = 1024
+}
+
+variable "desired_count" {
+  description = "Desired number of tasks"
+  type        = number
+  default     = 1
 }

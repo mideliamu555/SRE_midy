@@ -16,30 +16,30 @@ terraform {
 # ================================================
 provider "aws" {
   region  = "ap-southeast-2"
-  profile = "ver-session"  # MFA認証済みのプロファイルを使用
+  profile = "ver-session" # MFA認証済みのプロファイルを使用
 }
 
-# # ================================================
-# # Module
-# # ================================================
-# module "network" {
-#   source             = "../modules/01_network"
-#   create_nat_gateway = var.create_nat_gateway
-# }
+# ================================================
+# Module
+# ================================================
+module "network" {
+  source             = "../modules/01_network"
+  create_nat_gateway = var.create_nat_gateway
+}
 
-# module "compute" {
-#   source             = "../modules/02_compute"
-#   create_nat_gateway = var.create_nat_gateway
-#   vpc_id            = module.network.vpc_id
-#   subnet            = module.network.subnet
-#   security_group    = module.network.security_group
-#   target_group      = module.network.target_group
-#   alb_listener      = module.network.alb_listener
-#   codecommit_repository_name = var.codecommit_repository_name
-# } 
+module "compute" {
+  source                     = "../modules/02_compute"
+  create_nat_gateway         = var.create_nat_gateway
+  vpc_id                     = module.network.vpc_id
+  subnet                     = module.network.subnet
+  security_group             = module.network.security_group
+  target_group               = module.network.target_group
+  alb_listener               = module.network.alb_listener
+  codecommit_repository_name = var.codecommit_repository_name
+}
 
 
-# 以下のモジュールは不要なためコメントアウト
+# RDS用
 # module "database" {
 #   source         = "../modules/03_database"
 #   subnet         = module.network.subnet
