@@ -1,0 +1,1 @@
+# Remove the EFS variables as they are now managed within the module 

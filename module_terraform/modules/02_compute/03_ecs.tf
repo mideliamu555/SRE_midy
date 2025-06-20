@@ -211,3 +211,58 @@ resource "aws_iam_policy" "ECSExecuteCommand" {
     Version = "2012-10-17"
   })
 }
+
+# ================================================
+# Security Group Rule
+# ================================================
+resource "aws_security_group_rule" "ecs_to_efs" {
+  type                     = "ingress"
+  from_port                = 2049
+  to_port                  = 2049
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.efs.id
+  security_group_id        = var.security_group["fargate_ecs_task_id"]
+}
+
+# ================================================
+# IAM Role Policy - ecs_task_efs
+# ================================================
+resource "aws_iam_role_policy" "ecs_task_efs" {
+  name = "ecs-task-efs-policy"
+  role = aws_iam_role.fargate_ecs_task.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "elasticfilesystem:ClientMount",
+          "elasticfilesystem:ClientWrite",
+          "elasticfilesystem:ClientRootAccess"
+        ]
+        Resource = aws_efs_file_system.main.arn
+      }
+    ]
+  })
+}
+
+# ================================================
+# EFS Mount Target
+# ================================================
+resource "aws_efs_mount_target" "this" {
+  file_system_id  = aws_efs_file_system.main.id
+  subnet_id       = var.subnet["protected_a_id"]
+  security_groups = [aws_security_group.efs.id]
+}
+
+# ================================================
+# EFS用のVPCエンドポイントが設定されているか確認
+# ================================================
+resource "aws_vpc_endpoint" "efs" {
+  vpc_id             = var.vpc_id
+  service_name       = "com.amazonaws.ap-southeast-2.elasticfilesystem"
+  vpc_endpoint_type  = "Interface"
+  subnet_ids         = [var.subnet["protected_a_id"], var.subnet["protected_c_id"]]
+  security_group_ids = [aws_security_group.efs.id]
+}
