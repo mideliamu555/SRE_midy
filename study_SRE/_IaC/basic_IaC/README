@@ -1,0 +1,18 @@
+Goal
+
+Proccess
+
+| レベル     | 実力イメージ                             | 使用技術・内容                               |
+| ------- | ---------------------------------- | ------------------------------------- |
+| **Lv1** | Terraformで単一リソースを構築できる             | `aws_instance`, `aws_s3_bucket` 程度    |
+| **Lv2** | VPC, ALB, ECSなど複数構成をIaC化           | 変数・モジュールを使い分ける                        |
+| **Lv3** | 環境ごと(dev/stg/prod)に分離し、State管理を分ける | Terraform Cloud or backend(S3)管理      |
+| **Lv4** | CI/CDと連携し、IaCが自動適用される仕組み           | GitHub Actions + Terraform Plan/Apply |
+| **Lv5** | Terraformモジュールを社内標準化できる設計力         | reusable module設計、Security統制反映        |
+
+| 期間         | やること                          | ゴール               |
+| ---------- | ----------------------------- | ----------------- |
+| **1〜2ヶ月目** | TerraformでECS構築（ALB, VPC含む）   | IaC構築力を見せる        |
+| **3〜4ヶ月目** | GitHub Actionsで自動デプロイ構築       | CI/CD力を見せる        |
+| **5〜6ヶ月目** | Grafana + CloudWatchでメトリクス可視化 | 可観測性・運用改善力を見せる    |
+| **7ヶ月目以降** | PostmortemレポートやSLO定義を記載       | SRE文化を理解していることを示す |
